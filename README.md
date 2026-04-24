@@ -45,7 +45,7 @@ All this informations must be entered in the SshProxy config dialog. There you a
 Now you must configure your browser to use the proxy. For desktop Firefox / Chrome / Edge search for FoxyProxy Plugin.  
 [FoxyProxy for Firefox](https://addons.mozilla.org/en-US/firefox/addon/foxyproxy-standard/)  
 [FoxyProxy for Chrome](https://chromewebstore.google.com/detail/foxyproxy/gcknhkkoolaabfmlnjonogaaifnjlfnp?hl=en&pli=1)  
-[FoxyProxy for Microsoft Edge] (https://microsoftedge.microsoft.com/addons/detail/foxyproxy/flcnoalcefgkhkinjkffipfdhglnpnem
+[FoxyProxy for Microsoft Edge](https://microsoftedge.microsoft.com/addons/detail/foxyproxy/flcnoalcefgkhkinjkffipfdhglnpnem)
 
 Install it and configure it according to the screenshots. (You will only need to configure SOCKS5 OR HTTP not both!).
 If possible use SOCKS5 proxy.  
