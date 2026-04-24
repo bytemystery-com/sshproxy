@@ -66,7 +66,7 @@ type GUI struct {
 	toolStart        *widget.ToolbarAction
 	toolStop         *widget.ToolbarAction
 	toolChangePasswd *widget.ToolbarAction
-	toolUpdate *widget.ToolbarAction
+	toolUpdate       *widget.ToolbarAction
 
 	Scroll *container.Scroll
 

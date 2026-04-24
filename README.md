@@ -49,15 +49,21 @@ Now you must configure your browser to use the proxy. For desktop Firefox / Chro
 
 Install it and configure it according to the screenshots. (You will only need to configure SOCKS5 OR HTTP not both!).
 If possible use SOCKS5 proxy.  
-![alt text](/socks_foxyproxy.jpg "FoxyProxy SOCKS5 proxy config")  
-![alt text](/http_foxyproxy.jpg "FoxyProxy HTTP proxy config")  
+![alt text](./screenshots/socks_foxyproxy.jpg "FoxyProxy SOCKS5 proxy config")  
+![alt text](./screenshots/http_foxyproxy.jpg "FoxyProxy HTTP proxy config")  
 
 For Android there are 2 possibilities.  
 1. Use Firefox Browser and FoxyProxy as described above.  
 2. If you want to use the default Chrome based browser you can set the proxy in the WLAN settings. This proxy have to be a HTTP proxy - so enter the port for the HTTP server you configured in SshProxy.  
-![alt text](/android.jpg "Android WLAN proxy config")  
+![alt text](./screenshots/android.jpg "Android WLAN proxy config")  
 For mobile data SshProxy can not be used with Chrome on Android because mobile version of Chrome has no seperate proxy settings.  
 
+
+### Running a SSH server
+For running a SSH Server you need a Linux system (real or as VM, as VM ensure that you choose Bridge network or adjust NAT rules).  
+in the doc dir ([doc](./doc/server) you find a script ./start.sh.  
+First time start it with ./start-sh -c <EMAIL> <PASS>  
+This creates a user and a host key. Then start the server with ./start.sh  
 
 
 
