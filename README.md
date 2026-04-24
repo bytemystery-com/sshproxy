@@ -1,4 +1,5 @@
 # SshProxy
+
 SshProxy makes a SSH connection to a SSH server. Then it offers 2 proxies for tunneling traffic over the SSH connection.  
 
 1. SOCKS proxy (TCP only)  
@@ -22,28 +23,35 @@ SshProxy is written in [Go](https://go.dev/) and uses [Fyne](https://fyne.io/) a
 ![alt text](./screenshots/main.jpg "Main screen")
 ![alt text](./settings/main.jpg "Settings screen")
 
-
 ## Security
+
 - All data from the proxy to the SSH server are encrypted.
 - The target of your browsing does not see where you are - it always sees your local home based IP
 - Use host keys !!! This prevents you from Man-in-the-Middle-attack.
 - Do not use user/password for authentication. Use user/SSH key file. For keyfile use strong keys, if possible use Ed25519 instead of RSA.
- 
-
 
 ### Precompiled binaries
+
 #### Linux (64 Bit)
+
 [Tar file](https://github.com/bytemystery-com/sshproxy/releases/download/v0.2.2/SshProxy.tar.xz)  
 [Standalone binary](https://github.com/bytemystery-com/sshproxy/releases/download/v0.2.2/SshProxy)  
+
 #### Windows (64 Bit)
+
 [Standalone exe](https://github.com/bytemystery-com/sshproxy/releases/download/v0.2.2/SshProxy.exe)  
+
 #### Mac
+
 Not available - it could be build but requires Mac + SDK.  
+
 #### Android 
+
 [APK all in one](https://github.com/bytemystery-com/sshproxy/releases/download/v0.2.2/SshProxy.apk)  
 [APK only 64 bit](https://github.com/bytemystery-com/sshproxy/releases/download/v0.2.2/SshProxy_64.apk)  
 
 ### Usage of SshProxy
+
 You need a running and reachable SSH server.  
 For this server you have a user name, ssh key, perhaps a password if used without a SSH key file or if
 SSH key is password protected. You also have one or more host key files for the server. This file(s) is not needed
@@ -62,22 +70,20 @@ If possible use SOCKS5 proxy.
 ![alt text](./screenshots/http_foxyproxy.jpg "FoxyProxy HTTP proxy config")  
 
 For Android there are 2 possibilities.  
+
 1. Use Firefox Browser and FoxyProxy as described above.  
 2. If you want to use the default Chrome based browser you can set the proxy in the WLAN settings. This proxy have to be a HTTP proxy - so enter the port for the HTTP server you configured in SshProxy.  
 ![alt text](./screenshots/android.jpg "Android WLAN proxy config")  
-For mobile data SshProxy can not be used with Chrome on Android because mobile version of Chrome has no seperate proxy settings.  
-
+3. For mobile data SshProxy can not be used with Chrome on Android because mobile version of Chrome has no seperate proxy settings.  
 
 ### Running a SSH server
+
 For running a SSH Server you need a Linux system (real or as VM, as VM ensure that you choose Bridge network or adjust NAT rules).  
 In the doc dir [doc](./doc/server) you find a script ./start.sh.  
-First time start it with ./start-sh -c <EMAIL> <PASS>  
+First time start it with ./start-sh -c &lt;EMAIL&gt; &lt;PASS&gt;  
 This creates a user- and a host key files. Then start the server with ./start.sh  
-
 
 Author: Reiner Pröls  
 Licence: MIT  
 
-
 © Copyright Reiner Pröls, 2026
-
