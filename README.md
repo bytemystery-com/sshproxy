@@ -61,7 +61,7 @@ For mobile data SshProxy can not be used with Chrome on Android because mobile v
 
 ### Running a SSH server
 For running a SSH Server you need a Linux system (real or as VM, as VM ensure that you choose Bridge network or adjust NAT rules).  
-in the doc dir ([doc](./blob/master/doc/server) you find a script ./start.sh.  
+in the doc dir [doc](./doc/server) you find a script ./start.sh.  
 First time start it with ./start-sh -c <EMAIL> <PASS>  
 This creates a user and a host key. Then start the server with ./start.sh  
 
