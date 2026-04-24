@@ -67,6 +67,7 @@ type GUI struct {
 	toolStop         *widget.ToolbarAction
 	toolChangePasswd *widget.ToolbarAction
 	toolUpdate       *widget.ToolbarAction
+	toolList         *widget.ToolbarAction
 
 	Scroll *container.Scroll
 
@@ -191,9 +192,12 @@ func main() {
 	Gui.toolUpdate = widget.NewToolbarAction(theme.DownloadIcon(), func() {
 		CheckForUpdate(false)
 	})
+	Gui.toolList = widget.NewToolbarAction(theme.ListIcon(), func() {
+		UpdateCards()
+	})
 
 	Gui.Toolbar = widget.NewToolbar(Gui.toolToggleThema, widget.NewToolbarSeparator(),
-		Gui.toolStart, Gui.toolStop, widget.NewToolbarSeparator(), Gui.toolSettings,
+		Gui.toolList, Gui.toolStart, Gui.toolStop, widget.NewToolbarSeparator(), Gui.toolSettings,
 		widget.NewToolbarSeparator(), Gui.toolChangePasswd,
 		widget.NewToolbarSpacer(), Gui.toolUpdate, widget.NewToolbarSeparator(), Gui.toolInfo)
 
@@ -315,6 +319,16 @@ func UpdateToolBar() {
 		Gui.toolStart.Disable()
 		Gui.toolStop.Disable()
 	}
+	l, err := Gui.Settings.GetProxyList()
+	if err != nil {
+		Gui.toolList.Disable()
+		return
+	}
+	if len(l) > 1 {
+		Gui.toolList.Enable()
+	} else {
+		Gui.toolList.Disable()
+	}
 }
 
 func UpdateCards() {
@@ -368,10 +382,15 @@ func UpdateCards() {
 		var windowScale float32 = 1.0
 		dia.Resize(fyne.NewSize(si.Width*windowScale, dia.MinSize().Height))
 	} else {
-		Data.datas = make([]*ProxyEntry, 1, 1)
-		Data.datas[0] = proxies[0]
-		f()
+		if len(proxies) > 0 {
+			Data.datas = make([]*ProxyEntry, 1)
+			Data.datas[0] = proxies[0]
+			f()
+		} else {
+			Data.datas = nil
+		}
 	}
+	UpdateToolBar()
 }
 
 func addCards() {

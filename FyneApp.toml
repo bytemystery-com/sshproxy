@@ -2,8 +2,8 @@
 Icon = "assets/icons/icon.png"
 Name = "SshProxy"
 ID = "com.bytemystery.sshproxy"
-Version = "0.2.3"
-Build = 152
+Version = "0.2.5"
+Build = 166
 
 [LinuxAndBSD]
 GenericName = "SshProxy"
