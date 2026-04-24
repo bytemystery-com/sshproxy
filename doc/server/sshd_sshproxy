@@ -1,0 +1,25 @@
+Port ${PORT}
+AllowUsers ${USER}
+
+HostKey ${HOSTKEY}
+
+AuthorizedKeysFile ${AUTHKEYFILE}
+
+PidFile /tmp/sshd-tunnel_user.pid
+
+PrintLastLog yes
+PasswordAuthentication no
+ChallengeResponseAuthentication no
+UsePAM no
+X11Forwarding no
+ClientAliveInterval 5
+ClientAliveCountMax 3
+TCPKeepAlive no
+UseDNS no
+GatewayPorts yes
+LogLevel info
+Subsystem       sftp    /usr/lib/ssh/sftp-server
+AcceptEnv LANG LC_CTYPE LC_NUMERIC LC_TIME LC_COLLATE LC_MONETARY LC_MESSAGES
+AcceptEnv LC_PAPER LC_NAME LC_ADDRESS LC_TELEPHONE LC_MEASUREMENT
+AcceptEnv LC_IDENTIFICATION LC_ALL
+

@@ -1,0 +1,12 @@
+[Details]
+Icon = "assets/icons/icon.png"
+Name = "SshProxy"
+ID = "com.bytemystery.sshproxy"
+Version = "0.2.1"
+Build = 140
+
+[LinuxAndBSD]
+GenericName = "SshProxy"
+Categories = ["Network"]
+Comment = "SOCKS5 and HTTP proxy over ssh"
+Keywords = ["ssh", "socks5", "http", "proxy"]
