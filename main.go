@@ -188,7 +188,7 @@ func main() {
 	Gui.toolChangePasswd = widget.NewToolbarAction(theme.AccountIcon(), func() {
 		ChangePassword()
 	})
-	Gui.toolUpdate = widget.NewToolbarAction(theme.HelpIcon(), func() {
+	Gui.toolUpdate = widget.NewToolbarAction(theme.DownloadIcon(), func() {
 		CheckForUpdate(false)
 	})
 

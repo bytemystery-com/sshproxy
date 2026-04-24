@@ -1,18 +1,27 @@
 # SshProxy
-SshProxy ,akes a SSH connection to a SSH server. Then it offers 2 proxies for tunneling traffic over the SSH connection.  
+SshProxy makes a SSH connection to a SSH server. Then it offers 2 proxies for tunneling traffic over the SSH connection.  
+
 1. SOCKS proxy (TCP only)  
 2. HTTP proxy  
 
 SshProxy is written in [Go](https://go.dev/) and uses [Fyne](https://fyne.io/) as graphical toolkit.
 
-### Use cases for SshProxy
+## Use cases for SshProxy
+
 1. You are not at home and want to surf with your home IP address.  
-2. You will allow someone else to browse with your IP address.  
+2. You want allow someone else to browse with your IP address.  
 3. You want to connect to HTTP servers in an internal network when you are external and have no direkt VPN access.
 
 ## Differences to VPN
+
 1. You use your own server - you can access conten from your internal network
 2. You use your private IP address - VPN IP address are often banned
+
+## Screenshots
+
+![alt text](./screenshots/main.jpg "Main screen")
+![alt text](./settings/main.jpg "Settings screen")
+
 
 ## Security
 - All data from the proxy to the SSH server are encrypted.
