@@ -34,12 +34,12 @@ SshProxy is written in [Go](https://go.dev/) and uses [Fyne](https://fyne.io/) a
 
 #### Linux (64 Bit)
 
-[Tar file](https://github.com/bytemystery-com/sshproxy/releases/download/v0.2.2/SshProxy.tar.xz)  
-[Standalone binary](https://github.com/bytemystery-com/sshproxy/releases/download/v0.2.2/SshProxy)  
+[Tar file](https://github.com/bytemystery-com/sshproxy/releases/download/v0.2.3/SshProxy.tar.xz)  
+[Standalone binary](https://github.com/bytemystery-com/sshproxy/releases/download/v0.2.3/SshProxy)  
 
 #### Windows (64 Bit)
 
-[Standalone exe](https://github.com/bytemystery-com/sshproxy/releases/download/v0.2.2/SshProxy.exe)  
+[Standalone exe](https://github.com/bytemystery-com/sshproxy/releases/download/v0.2.3/SshProxy.exe)  
 
 #### Mac
 
@@ -47,8 +47,8 @@ Not available - it could be build but requires Mac + SDK.
 
 #### Android 
 
-[APK all in one](https://github.com/bytemystery-com/sshproxy/releases/download/v0.2.2/SshProxy.apk)  
-[APK only 64 bit](https://github.com/bytemystery-com/sshproxy/releases/download/v0.2.2/SshProxy_64.apk)  
+[APK all in one](https://github.com/bytemystery-com/sshproxy/releases/download/v0.2.3/SshProxy.apk)  
+[APK only 64 bit](https://github.com/bytemystery-com/sshproxy/releases/download/v0.2.3/SshProxy_64.apk)  
 
 ### Usage of SshProxy
 
