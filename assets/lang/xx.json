@@ -31,7 +31,7 @@
     "msg.masterpassword_set_err": "Setting the masterpassword failed !!",
     "msg.masterpassword_wrong": "Masterpassword is wrong !!",
     "ok": "Ok",
-    "selproxy.entry": "Select proxy",
+    "selproxy.entry": "Proxies",
     "selproxy.title": "Select proxy",
     "settigs.cation": "Settings",
     "settings.browse": "Browse",

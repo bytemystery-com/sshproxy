@@ -1,0 +1,12 @@
+/dist/
+/dist/linux/
+/dist/windows/
+/dist/android/
+/tmp/
+/build/
+__debug*
+/doc/server/auth_key
+/doc/server/sshproxy_host*
+/doc/server/sshproxy_user*
+
+

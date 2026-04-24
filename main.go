@@ -347,7 +347,7 @@ func UpdateCards() {
 		}
 		selProxy.SetSelectedIndex(index)
 		c := container.New(layout.NewFormLayout(),
-			widget.NewLabel(lang.X("selproxy.entry", "Select proxy")), selProxy)
+			widget.NewLabel(lang.X("selproxy.entry", "Proxies")), selProxy)
 		dia := dialog.NewCustomConfirm(lang.X("selproxy.title", "Select proxy"), lang.X("ok", "Ok"), lang.X("cancel", "Cancel"),
 			c, func(ok bool) {
 				if !ok {
