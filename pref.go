@@ -153,3 +153,12 @@ func (p *Preferences) GetProxyList() ([]*ProxyEntry, error) {
 	}
 	return plist, nil
 }
+
+func (p *Preferences) GetNumberOfProxies() (int, error) {
+	list := make([]ProxyEntry, 0, 1)
+	err := json.Unmarshal([]byte(Gui.Settings.ProxyList), &list)
+	if err != nil {
+		return 0, err
+	}
+	return len(list), nil
+}

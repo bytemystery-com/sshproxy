@@ -41,6 +41,7 @@ import (
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
+	"fyne.io/fyne/v2/canvas"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/dialog"
 	"fyne.io/fyne/v2/driver/desktop"
@@ -70,6 +71,7 @@ type GUI struct {
 	toolList         *widget.ToolbarAction
 
 	Scroll *container.Scroll
+	busy   *fyne.Container
 
 	Led_red_on     *fyne.StaticResource
 	Led_red_off    *fyne.StaticResource
@@ -203,13 +205,17 @@ func main() {
 
 	scaling := theme.Size("text") / 14.0
 
-	Gui.CardContainer = container.NewGridWrap(fyne.NewSize(300*scaling, 350*scaling))
+	Gui.CardContainer = container.NewGridWrap(fyne.NewSize(290*scaling, 350*scaling))
 
 	Gui.Scroll = container.NewScroll(Gui.CardContainer)
 
-	Gui.MainWindow.SetContent(container.NewBorder(Gui.Toolbar, nil, nil, nil, Gui.Scroll))
+	backGround := canvas.NewRectangle(Gui.Theme.GetSpecialColor("wait_background"))
+	Gui.busy = container.NewStack(backGround, container.NewVBox(layout.NewSpacer(), widget.NewProgressBarInfinite(), layout.NewSpacer()))
+	content := container.NewStack(Gui.Scroll, Gui.busy)
+	Gui.busy.Hide()
+	Gui.MainWindow.SetContent(container.NewBorder(Gui.Toolbar, nil, nil, nil, content))
 
-	Gui.MainWindow.Resize(fyne.NewSize(310*scaling, 395*scaling))
+	Gui.MainWindow.Resize(fyne.NewSize(300*scaling, 395*scaling))
 	Gui.MainWindow.CenterOnScreen()
 
 	showPasswordDialog(func(pass string) {
@@ -319,12 +325,13 @@ func UpdateToolBar() {
 		Gui.toolStart.Disable()
 		Gui.toolStop.Disable()
 	}
-	l, err := Gui.Settings.GetProxyList()
+
+	n, err := Gui.Settings.GetNumberOfProxies()
 	if err != nil {
 		Gui.toolList.Disable()
 		return
 	}
-	if len(l) > 1 {
+	if n > 1 {
 		Gui.toolList.Enable()
 	} else {
 		Gui.toolList.Disable()
@@ -333,64 +340,70 @@ func UpdateToolBar() {
 
 func UpdateCards() {
 	StopProxy()
-	proxies, _ := Gui.Settings.GetProxyList()
-	f := func() {
-		Gui.cards = make([]*SshCard, 0, 1)
-		if len(Data.datas) > 0 {
-			Data.lock.RLock()
-			item := Data.datas[0]
-			card := NewSshCard(item.Name, item.SocksPort, item.HttpPort)
-			Gui.cards = append(Gui.cards, card)
-			addCards()
-			Data.lock.RUnlock()
-			StartProxy()
-			StartStatusTimer()
-			UpdateToolBar()
-		}
-	}
+	go func() {
+		SetBusy(true)
+		proxies, _ := Gui.Settings.GetProxyList()
+		fyne.Do(func() {
+			f := func() {
+				Gui.cards = make([]*SshCard, 0, 1)
+				if len(Data.datas) > 0 {
+					Data.lock.RLock()
+					item := Data.datas[0]
+					card := NewSshCard(item.Name, item.SocksPort, item.HttpPort)
+					Gui.cards = append(Gui.cards, card)
+					addCards()
+					Data.lock.RUnlock()
+					StartProxy()
+					StartStatusTimer()
+					UpdateToolBar()
+				}
+			}
 
-	if len(proxies) > 1 {
-		list := make([]string, 0, len(proxies))
-		for _, item := range proxies {
-			list = append(list, item.Name)
-		}
-		selProxy := widget.NewSelect(list, nil)
-		index := Gui.Settings.LastSelProxyIndex
-		if index >= len(proxies) {
-			index = 0
-		}
-		selProxy.SetSelectedIndex(index)
-		c := container.New(layout.NewFormLayout(),
-			widget.NewLabel(lang.X("selproxy.entry", "Proxies")), selProxy)
-		dia := dialog.NewCustomConfirm(lang.X("selproxy.title", "Select proxy"), lang.X("ok", "Ok"), lang.X("cancel", "Cancel"),
-			c, func(ok bool) {
-				if !ok {
-					return
+			SetBusy(false)
+			if len(proxies) > 1 {
+				list := make([]string, 0, len(proxies))
+				for _, item := range proxies {
+					list = append(list, item.Name)
 				}
-				index := selProxy.SelectedIndex()
-				if index < 0 {
-					return
+				selProxy := widget.NewSelect(list, nil)
+				index := Gui.Settings.LastSelProxyIndex
+				if index >= len(proxies) {
+					index = 0
 				}
-				Gui.Settings.LastSelProxyIndex = index
-				Gui.Settings.Store()
-				Data.datas = make([]*ProxyEntry, 1, 1)
-				Data.datas[0] = proxies[index]
-				f()
-			}, Gui.MainWindow)
-		dia.Show()
-		si := Gui.MainWindow.Canvas().Size()
-		var windowScale float32 = 1.0
-		dia.Resize(fyne.NewSize(si.Width*windowScale, dia.MinSize().Height))
-	} else {
-		if len(proxies) > 0 {
-			Data.datas = make([]*ProxyEntry, 1)
-			Data.datas[0] = proxies[0]
-			f()
-		} else {
-			Data.datas = nil
-		}
-	}
-	UpdateToolBar()
+				selProxy.SetSelectedIndex(index)
+				c := container.New(layout.NewFormLayout(),
+					widget.NewLabel(lang.X("selproxy.entry", "Proxies")), selProxy)
+				dia := dialog.NewCustomConfirm(lang.X("selproxy.title", "Select proxy"), lang.X("ok", "Ok"), lang.X("cancel", "Cancel"),
+					c, func(ok bool) {
+						if !ok {
+							return
+						}
+						index := selProxy.SelectedIndex()
+						if index < 0 {
+							return
+						}
+						Gui.Settings.LastSelProxyIndex = index
+						Gui.Settings.Store()
+						Data.datas = make([]*ProxyEntry, 1, 1)
+						Data.datas[0] = proxies[index]
+						f()
+					}, Gui.MainWindow)
+				dia.Show()
+				si := Gui.MainWindow.Canvas().Size()
+				var windowScale float32 = 1.0
+				dia.Resize(fyne.NewSize(si.Width*windowScale, dia.MinSize().Height))
+			} else {
+				if len(proxies) > 0 {
+					Data.datas = make([]*ProxyEntry, 1)
+					Data.datas[0] = proxies[0]
+					f()
+				} else {
+					Data.datas = nil
+				}
+			}
+			UpdateToolBar()
+		})
+	}()
 }
 
 func addCards() {
@@ -507,19 +520,36 @@ func CheckForUpdate(notify bool) {
 
 func ChangePassword() {
 	showPasswordDialog(func(pass string) {
-		plist, err := Gui.Settings.GetProxyList()
-		pass2, err := Gui.Settings.Crypt.EncryptPassword(InternPassword, pass)
-		if err != nil {
-			return
-		}
-		Gui.MasterPassword = string(pass2)
-		Gui.Settings.MasterKeyTest = PREF_MASTERKEY_TEST_VALUE
-		if !CheckMasterKey() {
-			dia := dialog.NewError(errors.New(lang.X("msg.masterpassword_set_err", "Setting the masterpassword failed !!")), Gui.MainWindow)
-			dia.Show()
-		} else {
-			Gui.Settings.SetProxies(plist)
-			Gui.Settings.Store()
-		}
+		go func() {
+			SetBusy(true)
+			plist, err := Gui.Settings.GetProxyList()
+			pass2, err := Gui.Settings.Crypt.EncryptPassword(InternPassword, pass)
+			fyne.Do(func() {
+				SetBusy(false)
+
+				if err != nil {
+					return
+				}
+				Gui.MasterPassword = string(pass2)
+				Gui.Settings.MasterKeyTest = PREF_MASTERKEY_TEST_VALUE
+				if !CheckMasterKey() {
+					dia := dialog.NewError(errors.New(lang.X("msg.masterpassword_set_err", "Setting the masterpassword failed !!")), Gui.MainWindow)
+					dia.Show()
+				} else {
+					Gui.Settings.SetProxies(plist)
+					Gui.Settings.Store()
+				}
+			})
+		}()
 	}, nil, true)
+}
+
+func SetBusy(busy bool) {
+	fyne.Do(func() {
+		if busy {
+			Gui.busy.Show()
+		} else {
+			Gui.busy.Hide()
+		}
+	})
 }

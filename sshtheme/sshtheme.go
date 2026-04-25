@@ -91,7 +91,6 @@ func (p *SshTheme) Color(c fyne.ThemeColorName, v fyne.ThemeVariant) color.Color
 			return color.NRGBA{R: 225, G: 225, B: 225, A: 255}
 		case theme.ColorNameSelection:
 			return color.NRGBA{R: 191, G: 225, B: 255, A: 255}
-
 		}
 	}
 	/*
@@ -126,11 +125,15 @@ func (p *SshTheme) GetSpecialColor(c string) color.Color {
 		switch c {
 		case "error_overlay":
 			return color.NRGBA{255, 70, 42, 45}
+		case "wait_background":
+			return color.NRGBA{127, 127, 127, 180}
 		}
 	} else {
 		switch c {
 		case "error_overlay":
 			return color.NRGBA{255, 70, 105, 45}
+		case "wait_background":
+			return color.NRGBA{127, 127, 127, 180}
 		}
 	}
 	return theme.Color(theme.ColorNameForeground)

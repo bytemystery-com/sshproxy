@@ -162,7 +162,7 @@ func NewSshCard(title string, socksPort, httpPort int) *SshCard {
 	p.unitLastConnect.SetTextStyle(&unitStyle)
 
 	var content *fyne.Container
-	labelSize := util.GetDefaultTextSize("XXXXXXXXXXXXXXX")
+	labelSize := util.GetDefaultTextSize("XXXXXXXXXXXXXX")
 	fieldSize := util.GetDefaultTextSize("XXXXXXXXXX")
 	unitSize := util.GetDefaultTextSize("XXX")
 	fieldSize.Height *= 1.6

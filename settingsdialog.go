@@ -254,76 +254,82 @@ func NewProxyCfgTab(index int, proxy *ProxyEntry) *ProxyCfgTab {
 }
 
 func ShowSettingsDialog() {
-	tabs := container.NewAppTabs()
-	entries, _ := Gui.Settings.GetProxyList()
-	anzahl := len(entries) + 1
+	go func() {
+		SetBusy(true)
+		entries, _ := Gui.Settings.GetProxyList()
+		fyne.Do(func() {
+			tabs := container.NewAppTabs()
+			anzahl := len(entries) + 1
 
-	cfgTabList := make([]*ProxyCfgTab, 0, anzahl)
+			cfgTabList := make([]*ProxyCfgTab, 0, anzahl)
 
-	for i := range anzahl {
-		var proxy *ProxyEntry
-		if i < len(entries) {
-			proxy = entries[i]
-		}
-		cfg := NewProxyCfgTab(i+1, proxy)
-		cfgTabList = append(cfgTabList, cfg)
-		tabs.Append(cfg.tabItem)
-	}
-	oldSize := Gui.MainWindow.Canvas().Size()
-	Gui.MainWindow.Resize(fyne.NewSize(950, 700))
-	Gui.MainWindow.CenterOnScreen()
-	dia := dialog.NewCustomConfirm(lang.X("settigs.cation", "Settings"),
-		lang.X("ok", "Ok"), lang.X("cancel", "Cancel"), container.NewScroll(tabs), func(ok bool) {
-			// to do
-			Gui.MainWindow.Resize(oldSize)
-			Gui.MainWindow.CenterOnScreen()
-			if !ok {
-				return
-			}
-			pList := make([]*ProxyEntry, 0, len(tabs.Items))
-			for i := range len(tabs.Items) {
-				cfgTab := cfgTabList[i]
-				if cfgTab.name.Text != "" {
-					proxy := ProxyEntry{}
-					proxy.Name = cfgTab.name.Text
-					proxy.Host = cfgTab.host.Text
-					x, err := strconv.Atoi(cfgTab.port.Text)
-					if err == nil {
-						proxy.Port = x
-					}
-					x, err = strconv.Atoi(cfgTab.socksPort.Text)
-					if err == nil {
-						if x <= 0 {
-							x = 7777
-						}
-						proxy.SocksPort = x
-					} else {
-						proxy.SocksPort = 7777
-					}
-					x, err = strconv.Atoi(cfgTab.httpPort.Text)
-					if err == nil {
-						if x <= 0 {
-							x = 8888
-						}
-						proxy.HttpPort = x
-					} else {
-						proxy.HttpPort = 8888
-					}
-					proxy.User = cfgTab.user.Text
-					proxy.Password = cfgTab.pass.Text
-					proxy.KeyFileContent = cfgTab.proxy.KeyFileContent
-					proxy.HostFilesContent = cfgTab.hostFiles
-					pList = append(pList, &proxy)
+			for i := range anzahl {
+				var proxy *ProxyEntry
+				if i < len(entries) {
+					proxy = entries[i]
 				}
+				cfg := NewProxyCfgTab(i+1, proxy)
+				cfgTabList = append(cfgTabList, cfg)
+				tabs.Append(cfg.tabItem)
 			}
-			Gui.Settings.SetProxies(pList)
-			Gui.Settings.Store()
-			UpdateCards()
-		}, Gui.MainWindow)
+			oldSize := Gui.MainWindow.Canvas().Size()
+			Gui.MainWindow.Resize(fyne.NewSize(950, 700))
+			Gui.MainWindow.CenterOnScreen()
+			dia := dialog.NewCustomConfirm(lang.X("settigs.cation", "Settings"),
+				lang.X("ok", "Ok"), lang.X("cancel", "Cancel"), container.NewScroll(tabs), func(ok bool) {
+					// to do
+					Gui.MainWindow.Resize(oldSize)
+					Gui.MainWindow.CenterOnScreen()
+					if !ok {
+						return
+					}
+					pList := make([]*ProxyEntry, 0, len(tabs.Items))
+					for i := range len(tabs.Items) {
+						cfgTab := cfgTabList[i]
+						if cfgTab.name.Text != "" {
+							proxy := ProxyEntry{}
+							proxy.Name = cfgTab.name.Text
+							proxy.Host = cfgTab.host.Text
+							x, err := strconv.Atoi(cfgTab.port.Text)
+							if err == nil {
+								proxy.Port = x
+							}
+							x, err = strconv.Atoi(cfgTab.socksPort.Text)
+							if err == nil {
+								if x <= 0 {
+									x = 7777
+								}
+								proxy.SocksPort = x
+							} else {
+								proxy.SocksPort = 7777
+							}
+							x, err = strconv.Atoi(cfgTab.httpPort.Text)
+							if err == nil {
+								if x <= 0 {
+									x = 8888
+								}
+								proxy.HttpPort = x
+							} else {
+								proxy.HttpPort = 8888
+							}
+							proxy.User = cfgTab.user.Text
+							proxy.Password = cfgTab.pass.Text
+							proxy.KeyFileContent = cfgTab.proxy.KeyFileContent
+							proxy.HostFilesContent = cfgTab.hostFiles
+							pList = append(pList, &proxy)
+						}
+					}
+					Gui.Settings.SetProxies(pList)
+					Gui.Settings.Store()
+					UpdateCards()
+				}, Gui.MainWindow)
 
-	dia.Show()
-	//	Gui.MainWindow.Canvas().Focus(user)
-	si := Gui.MainWindow.Canvas().Size()
-	var windowScale float32 = 1.0
-	dia.Resize(fyne.NewSize(si.Width*windowScale, si.Height*windowScale))
+			SetBusy(false)
+			dia.Show()
+			//	Gui.MainWindow.Canvas().Focus(user)
+			si := Gui.MainWindow.Canvas().Size()
+			var windowScale float32 = 1.0
+			dia.Resize(fyne.NewSize(si.Width*windowScale, si.Height*windowScale))
+		})
+	}()
 }
