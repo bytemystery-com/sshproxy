@@ -74,6 +74,7 @@ var (
 
 type SshCard struct {
 	title            *colorlabel.ColorLabel
+	displayErr       *widget.Label
 	labelTotal       *colorlabel.ColorLabel
 	labelRead        *colorlabel.ColorLabel
 	labelWrite       *colorlabel.ColorLabel
@@ -105,12 +106,16 @@ func NewSshCard(title string, socksPort, httpPort int) *SshCard {
 	//	textWidth := util.GetDefaultTextWidth("X")
 
 	p := SshCard{
-		title: colorlabel.NewColorLabel(title, theme.ColorNamePrimary, nil, 2.0),
-		icon:  widget.NewIcon(Gui.Led_gray_off),
+		title:      colorlabel.NewColorLabel(title, theme.ColorNamePrimary, nil, 2.0),
+		displayErr: widget.NewLabel(""),
+		icon:       widget.NewIcon(Gui.Led_gray_off),
 	}
+	p.displayErr.Importance = widget.WarningImportance
+	p.displayErr.Wrapping = fyne.TextWrapBreak
 	AdjustImage(p.icon)
 
 	header := container.NewHBox(p.title, layout.NewSpacer(), p.icon)
+	footer := p.displayErr
 	labelStyle := fyne.TextStyle{
 		Bold:      labelBold,
 		Monospace: labelMonospace,
@@ -134,7 +139,6 @@ func NewSshCard(title string, socksPort, httpPort int) *SshCard {
 	p.labelRead.SetTextStyle(&labelStyle)
 	p.labelWrite = colorlabel.NewColorLabel(lang.X("card.write", "Write"), labelWriteColor, nil, float32(labelScale))
 	p.labelWrite.SetTextStyle(&labelStyle)
-
 	p.labelLastConnect = colorlabel.NewColorLabel(lang.X("card.lastConnect", "Online"), labelLastConnectColor, nil, float32(labelScale))
 	p.labelLastConnect.SetTextStyle(&labelStyle)
 
@@ -184,7 +188,7 @@ func NewSshCard(title string, socksPort, httpPort int) *SshCard {
 		container.NewGridWrap(labelSize, p.labelLastConnect), container.NewHBox(container.NewGridWrap(fieldSize, p.displayLastConnect), container.NewGridWrap(unitSize, p.unitLastConnect)),
 	)
 
-	content = container.NewVBox(header, content)
+	content = container.NewVBox(header, content, footer)
 	fillerSize := float32(16)
 	c := container.NewBorder(util.NewFiller(fillerSize, fillerSize), util.NewFiller(fillerSize, fillerSize), util.NewFiller(fillerSize, fillerSize), util.NewFiller(fillerSize, fillerSize),
 		content)
@@ -205,6 +209,8 @@ func (c *SshCard) SetOnOffStatus(online bool, on bool) {
 		if !online {
 			c.displayLastConnect.SetText("---")
 			c.unitLastConnect.SetText("---")
+		} else {
+			c.displayErr.SetText("")
 		}
 	})
 }
@@ -253,6 +259,14 @@ func (c *SshCard) SetStatStatus(r uint64, w uint64, reconnects uint64, lastConne
 		}
 
 		c.displayReconnect.SetText(fmt.Sprintf("%d", reconnects))
+	})
+}
+
+func (c *SshCard) SetError(msg string) {
+	fyne.Do(func() {
+		if Gui.running {
+			c.displayErr.SetText(msg)
+		}
 	})
 }
 

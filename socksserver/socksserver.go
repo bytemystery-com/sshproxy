@@ -33,6 +33,7 @@ import (
 	"sync"
 	"time"
 
+	"sshproxy/notify"
 	"sshproxy/server"
 
 	"github.com/armon/go-socks5"
@@ -77,12 +78,16 @@ type SocksServer struct {
 	port            int
 	listen          net.Listener
 	lock            sync.RWMutex
+	notify          chan<- notify.NotifyData
+	notifyIndex     int
 }
 
-func NewSocksServer(server server.Server, port int) *SocksServer {
+func NewSocksServer(server server.Server, port int, notify chan<- notify.NotifyData, index int) *SocksServer {
 	s := SocksServer{}
 	s.server = server
 	s.port = port
+	s.notify = notify
+	s.notifyIndex = index
 	return &s
 }
 
@@ -119,10 +124,11 @@ func (s *SocksServer) Stop() {
 func (s *SocksServer) Start() error {
 	// SOCKS5 Server mit SSH Dialer
 	dialer := func(ctx context.Context, network, addr string) (net.Conn, error) {
-		fmt.Println("addr", addr)
+		s.trace("dialer", "addr", addr)
 		if s.client != nil {
 			n, err := s.client.Dial(network, addr)
 			if err != nil {
+				notify.SendNotify(s.notify, s.notifyIndex, "socks_dial_err", err)
 				s.doReconnect()
 			}
 			return n, err
@@ -147,6 +153,7 @@ func (s *SocksServer) Start() error {
 		err := s.connect()
 		if err != nil {
 			s.trace("connect", "error", err)
+			notify.SendNotify(s.notify, s.notifyIndex, "socks_connect_err", err)
 		}
 		s.lock.Lock()
 		addr := fmt.Sprintf("0.0.0.0:%d", s.port)
@@ -154,6 +161,7 @@ func (s *SocksServer) Start() error {
 		if err != nil {
 			s.trace("listen", "error", err)
 			s.lock.Unlock()
+			notify.SendNotify(s.notify, s.notifyIndex, "socks_listen_err", err)
 			return
 		}
 		s.lock.Unlock()
@@ -161,6 +169,7 @@ func (s *SocksServer) Start() error {
 		s.trace("listen and serve", "tcp", addr)
 		if err != nil {
 			s.trace("server", "error", err)
+			notify.SendNotify(s.notify, s.notifyIndex, "socks_serve_err", err)
 		}
 	}()
 
@@ -201,6 +210,7 @@ func (s *SocksServer) doReconnect() {
 	t := SOCKSSERVER_SSH_KEEPALIVE_INTERVAL
 	if err != nil {
 		t = SOCKSSERVER_SSH_RECONNECT_INTERVAL
+		notify.SendNotify(s.notify, s.notifyIndex, "socks_reconnect_err", err)
 	}
 	s.keepAliveTicker.Reset(time.Duration(t) * time.Second)
 }
@@ -268,6 +278,7 @@ func (s *SocksServer) sendKeepAlive() {
 		s.trace("keep alive timeout", "error", err)
 	}
 	if err != nil {
+		notify.SendNotify(s.notify, s.notifyIndex, "socks_keepalive_err", err)
 		s.doReconnect()
 	}
 }

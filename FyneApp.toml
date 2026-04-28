@@ -4,8 +4,8 @@ Website = "https://github.com/bytemystery-com/sshproxy"
 Icon = "assets/icons/icon.png"
 Name = "SshProxy"
 ID = "com.bytemystery.sshproxy"
-Version = "0.2.6"
-Build = 180
+Version = "0.2.7"
+Build = 190
 
 [LinuxAndBSD]
 GenericName = "SshProxy"

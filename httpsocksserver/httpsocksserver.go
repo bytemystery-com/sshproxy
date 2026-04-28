@@ -32,6 +32,8 @@ import (
 	"net/http"
 	"time"
 
+	"sshproxy/notify"
+
 	"github.com/elazarl/goproxy"
 	"golang.org/x/net/proxy"
 )
@@ -41,18 +43,23 @@ const (
 )
 
 type HttpSocksServer struct {
-	server   *http.Server
-	proxy    *goproxy.ProxyHttpServer
-	httpPort int
+	server      *http.Server
+	proxy       *goproxy.ProxyHttpServer
+	httpPort    int
+	notify      chan<- notify.NotifyData
+	notifyIndex int
 }
 
-func NewHttpSocksServer(socksAddr string, socksPort, httpPort int) (*HttpSocksServer, error) {
+func NewHttpSocksServer(socksAddr string, socksPort, httpPort int, notifych chan<- notify.NotifyData, index int) (*HttpSocksServer, error) {
 	h := HttpSocksServer{
-		httpPort: httpPort,
+		httpPort:    httpPort,
+		notify:      notifych,
+		notifyIndex: index,
 	}
 	dialer, err := proxy.SOCKS5("tcp", fmt.Sprintf("%s:%d", socksAddr, socksPort), nil, proxy.Direct)
 	if err != nil {
 		h.trace("socks5", "error", err)
+		notify.SendNotify(h.notify, h.notifyIndex, "httpproxy_socks_err", err)
 		return nil, err
 	}
 	h.proxy = goproxy.NewProxyHttpServer()
@@ -91,6 +98,7 @@ func (h *HttpSocksServer) Start() {
 		// https ListenAndServeTLS
 		if err != nil {
 			h.trace("Start", "error", err)
+			notify.SendNotify(h.notify, h.notifyIndex, "httpproxy_listenandserve_err", err)
 		}
 	}()
 }

@@ -34,12 +34,12 @@ SshProxy is written in [Go](https://go.dev/) and uses [Fyne](https://fyne.io/) a
 
 #### Linux (64 Bit)
 
-[Tar file](https://github.com/bytemystery-com/sshproxy/releases/download/v0.2.6/SshProxy.tar.xz)  
-[Standalone binary](https://github.com/bytemystery-com/sshproxy/releases/download/v0.2.6/SshProxy)  
+[Tar file](https://github.com/bytemystery-com/sshproxy/releases/download/v0.2.7/SshProxy.tar.xz)  
+[Standalone binary](https://github.com/bytemystery-com/sshproxy/releases/download/v0.2.7/SshProxy)  
 
 #### Windows (64 Bit)
 
-[Standalone exe](https://github.com/bytemystery-com/sshproxy/releases/download/v0.2.6/SshProxy.exe)  
+[Standalone exe](https://github.com/bytemystery-com/sshproxy/releases/download/v0.2.7/SshProxy.exe)  
 
 #### Mac
 
@@ -47,8 +47,8 @@ Not available - it could be build but requires Mac + SDK.
 
 #### Android 
 
-[APK all in one](https://github.com/bytemystery-com/sshproxy/releases/download/v0.2.6/SshProxy.apk)  
-[APK only 64 bit](https://github.com/bytemystery-com/sshproxy/releases/download/v0.2.6/SshProxy_64.apk)  
+[APK all in one](https://github.com/bytemystery-com/sshproxy/releases/download/v0.2.7/SshProxy.apk)  
+[APK only 64 bit](https://github.com/bytemystery-com/sshproxy/releases/download/v0.2.7/SshProxy_64.apk)  
 
 ### Usage of SshProxy
 
@@ -82,6 +82,10 @@ For running a SSH Server you need a Linux system (real or as VM, as VM ensure th
 In the doc dir [doc](./doc/server) you find a script ./start.sh.  
 First time start it with ./start-sh -c &lt;EMAIL&gt; &lt;PASS&gt;  
 This creates a user- and a host key files. Then start the server with ./start.sh  
+
+### Statistics
+
+The project consists of round about 2400 lines of go code.  
 
 Author: Reiner Pröls  
 Licence: MIT  

@@ -76,6 +76,8 @@ func (p *SshTheme) Color(c fyne.ThemeColorName, v fyne.ThemeVariant) color.Color
 			return color.NRGBA{R: 255, G: 104, B: 82, A: 255}
 		case theme.ColorNameForeground:
 			return color.NRGBA{R: 230, G: 230, B: 230, A: 255}
+		case theme.ColorNameWarning:
+			return color.NRGBA{R: 255, G: 242, B: 0, A: 255}
 		}
 	} else {
 		switch c {
@@ -91,6 +93,8 @@ func (p *SshTheme) Color(c fyne.ThemeColorName, v fyne.ThemeVariant) color.Color
 			return color.NRGBA{R: 225, G: 225, B: 225, A: 255}
 		case theme.ColorNameSelection:
 			return color.NRGBA{R: 191, G: 225, B: 255, A: 255}
+		case theme.ColorNameWarning:
+			return color.NRGBA{R: 200, G: 0, B: 153, A: 255}
 		}
 	}
 	/*

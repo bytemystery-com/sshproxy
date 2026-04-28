@@ -187,8 +187,9 @@ func (server *Server) Connect() (*ssh.Client, error) {
 		}
 
 		config := &ssh.ClientConfig{
-			User: server.User,
-			Auth: auth,
+			User:    server.User,
+			Auth:    auth,
+			Timeout: 5 * time.Second,
 			/*
 				HostKeyAlgorithms: []string{
 					ssh.KeyAlgoED25519,

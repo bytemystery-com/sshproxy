@@ -35,6 +35,7 @@ import (
 	"time"
 
 	"sshproxy/httpsocksserver"
+	"sshproxy/notify"
 	"sshproxy/socksserver"
 	"sshproxy/sshtheme"
 	"sshproxy/util"
@@ -49,6 +50,10 @@ import (
 	"fyne.io/fyne/v2/layout"
 	"fyne.io/fyne/v2/theme"
 	"fyne.io/fyne/v2/widget"
+)
+
+const (
+	MAIN_NOTIFY_CHANNEL_SIZE = 10
 )
 
 type GUI struct {
@@ -117,10 +122,12 @@ type FlagsType struct {
 var Flags FlagsType
 
 type Datas struct {
-	datas        []*ProxyEntry
-	socksServers []*socksserver.SocksServer
-	httpServers  []*httpsocksserver.HttpSocksServer
-	lock         sync.RWMutex
+	datas         []*ProxyEntry
+	socksServers  []*socksserver.SocksServer
+	httpServers   []*httpsocksserver.HttpSocksServer
+	lock          sync.RWMutex
+	notifyChannel chan notify.NotifyData
+	notifyWg      sync.WaitGroup
 }
 
 var Data Datas
@@ -205,7 +212,7 @@ func main() {
 
 	scaling := theme.Size("text") / 14.0
 
-	Gui.CardContainer = container.NewGridWrap(fyne.NewSize(290*scaling, 350*scaling))
+	Gui.CardContainer = container.NewGridWrap(fyne.NewSize(290*scaling, 380*scaling))
 
 	Gui.Scroll = container.NewScroll(Gui.CardContainer)
 
@@ -215,7 +222,7 @@ func main() {
 	Gui.busy.Hide()
 	Gui.MainWindow.SetContent(container.NewBorder(Gui.Toolbar, nil, nil, nil, content))
 
-	Gui.MainWindow.Resize(fyne.NewSize(300*scaling, 395*scaling))
+	Gui.MainWindow.Resize(fyne.NewSize(300*scaling, 425*scaling))
 	Gui.MainWindow.CenterOnScreen()
 
 	showPasswordDialog(func(pass string) {
@@ -244,6 +251,11 @@ func main() {
 		LogOut()
 	}, Gui.Settings.FirstStart)
 
+	Data.notifyChannel = make(chan notify.NotifyData, MAIN_NOTIFY_CHANNEL_SIZE)
+	Data.notifyWg = sync.WaitGroup{}
+	Data.notifyWg.Add(1)
+	go notifyLoop(Data.notifyChannel)
+
 	fyne.CurrentApp().Settings().AddListener(func(settings fyne.Settings) {
 		updateTheme()
 	})
@@ -257,8 +269,27 @@ func main() {
 	defer CancelStatusTimer()
 	defer StopProxy()
 
+	/*
+		defer func() {
+			if Data.notifyChannel != nil {
+				close(Data.notifyChannel)
+				Data.notifyWg.Wait()
+				Data.notifyChannel = nil
+			}
+		}()
+	*/
+
 	Gui.MainWindow.Show()
 	Gui.App.Run()
+}
+
+func notifyLoop(notifych <-chan notify.NotifyData) {
+	for val := range notifych {
+		if val.Index >= 0 && val.Index < len(Gui.cards) && val.Err != nil {
+			Gui.cards[val.Index].SetError(val.Err.Error())
+		}
+	}
+	Data.notifyWg.Done()
 }
 
 func updateTheme() {
@@ -420,14 +451,14 @@ func StartProxy() {
 	Data.lock.Lock()
 	defer Data.lock.Unlock()
 	Data.socksServers = make([]*socksserver.SocksServer, 0, len(Data.datas))
-	for _, item := range Data.datas {
-		s := socksserver.NewSocksServer(item.Server, item.SocksPort)
+	for index, item := range Data.datas {
+		s := socksserver.NewSocksServer(item.Server, item.SocksPort, Data.notifyChannel, index)
 		Data.socksServers = append(Data.socksServers, s)
 		s.Start()
 	}
 	Data.httpServers = make([]*httpsocksserver.HttpSocksServer, 0, len(Data.datas))
-	for _, item := range Data.datas {
-		h, _ := httpsocksserver.NewHttpSocksServer("0.0.0.0", item.SocksPort, item.HttpPort)
+	for index, item := range Data.datas {
+		h, _ := httpsocksserver.NewHttpSocksServer("0.0.0.0", item.SocksPort, item.HttpPort, Data.notifyChannel, index)
 		Data.httpServers = append(Data.httpServers, h)
 		h.Start()
 	}

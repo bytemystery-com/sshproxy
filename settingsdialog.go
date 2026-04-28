@@ -275,7 +275,8 @@ func ShowSettingsDialog() {
 			oldSize := Gui.MainWindow.Canvas().Size()
 			Gui.MainWindow.Resize(fyne.NewSize(950, 700))
 			Gui.MainWindow.CenterOnScreen()
-			dia := dialog.NewCustomConfirm(lang.X("settigs.cation", "Settings"),
+			var dia *dialog.ConfirmDialog
+			dia = dialog.NewCustomConfirm(lang.X("settigs.cation", "Settings"),
 				lang.X("ok", "Ok"), lang.X("cancel", "Cancel"), container.NewScroll(tabs), func(ok bool) {
 					// to do
 					Gui.MainWindow.Resize(oldSize)
@@ -319,9 +320,12 @@ func ShowSettingsDialog() {
 							pList = append(pList, &proxy)
 						}
 					}
-					Gui.Settings.SetProxies(pList)
-					Gui.Settings.Store()
-					UpdateCards()
+					dia.Hide()
+					fyne.Do(func() {
+						Gui.Settings.SetProxies(pList)
+						Gui.Settings.Store()
+						UpdateCards()
+					})
 				}, Gui.MainWindow)
 
 			SetBusy(false)

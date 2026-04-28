@@ -301,3 +301,15 @@ func LogOut() {
 		LogOut()
 	}, false)
 }
+
+func SendNotify(notifyChannel chan<- string, msg string) bool {
+	flag := false
+	if notifyChannel != nil {
+		select {
+		case notifyChannel <- msg:
+			flag = true
+		default:
+		}
+	}
+	return flag
+}
