@@ -207,6 +207,12 @@ func (server *Server) Connect() (*ssh.Client, error) {
 					return nil
 				}
 			},
+			/*
+				BannerCallback: func(message string) error {
+					fmt.Println("message")
+					return nil
+				},
+			*/
 		}
 		rawConn, err := net.Dial("tcp", server.Host+":"+strconv.Itoa(server.Port))
 		if err != nil {
