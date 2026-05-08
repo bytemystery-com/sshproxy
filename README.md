@@ -91,6 +91,10 @@ In the doc dir [doc](./doc/server) you find a script ./start.sh.
 First time start it with ./start-sh -c &lt;EMAIL&gt; &lt;PASS&gt;  
 This creates a user- and a host key files. Then start the server with ./start.sh  
 
+### Using with Zoom
+
+[Manual for using Zoom in Firefox using SshProxy] (./doc/zoom/README.md)
+
 ### Statistics
 
 The project consists of round about 2400 lines of go code.  
