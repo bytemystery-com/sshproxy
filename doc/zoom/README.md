@@ -11,7 +11,8 @@ Configure a SOCKS5 Proxy as described here [FoxyProxy configuration](../../READM
 ## Configure Firefox  
 
 Now we need to configure Firefox to use WebRTC over our proxy:  
-In the browser open [about:config](about:config)  
+In Firefox type in the asddress bar about:config and press ENTER.  
+Now serch for:
 
 - media.peerconnection.ice.proxy_only = true  
 ![alt text](../../screenshots/firefox_rtc.jpg "Firefox RTC settings")  
