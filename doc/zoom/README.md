@@ -37,10 +37,6 @@ Now search for **applications**:
 Click on **zoomtg** and change the entry to **Always ask**:  
 ![alt text](../../screenshots/firefox_zoom.jpg "Zoom - open mode")  
 
-
-
-
-
 Author: Reiner Pröls  
 Licence: MIT  
 
