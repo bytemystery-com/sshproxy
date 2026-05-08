@@ -2,7 +2,7 @@
 
 It is possible to use Zoom in a web browser and to use SshProxy.  
 Normally Zoom tries to use WebRTC over UDP. But we can only handle TCP traffic.  
-So we need to configure this. So we need a browser which can do it - Firefox.  
+So we need a browser which allows us to configure this - Firefox.  
 So if not already installed - install [Firefox](https://www.firefox.com)  
 Now we need a plugin - [FoxyProxy] (https://addons.mozilla.org/en-US/firefox/addon/foxyproxy-standard/)  
 Install it as described here [FofxProxy installation](../README.md#foxyproxy-installation)  
