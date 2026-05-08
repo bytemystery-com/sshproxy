@@ -59,12 +59,18 @@ but I strongly recommend to use it - so you can be sure you connect really to yo
 You also have the hostname (if you operate the server at home you will need a dydns service (e.g.: no-ip) and you have to ensure that the ssh server port is reachable from outside (you need to confure your routers firewall settings)) and port of the SSH server.  
 All this informations must be entered in the SshProxy config dialog. There you also specify the port for the SOCK5 server and the HTTP server SshProxy will create. ,
 
+## FoxyProxy installation
+
 Now you must configure your browser to use the proxy. For desktop Firefox / Chrome / Edge search for FoxyProxy Plugin.  
 [FoxyProxy for Firefox](https://addons.mozilla.org/en-US/firefox/addon/foxyproxy-standard/)  
+![alt text](./screenshots/foxyproxy_install_1.jpg "FoxyProxy install 1")  
+![alt text](./screenshots/foxyproxy_install_2.jpg "FoxyProxy install 2")  
 [FoxyProxy for Chrome](https://chromewebstore.google.com/detail/foxyproxy/gcknhkkoolaabfmlnjonogaaifnjlfnp?hl=en&pli=1)  
 [FoxyProxy for Microsoft Edge](https://microsoftedge.microsoft.com/addons/detail/foxyproxy/flcnoalcefgkhkinjkffipfdhglnpnem)
 
-Install it and configure it according to the screenshots. (You will only need to configure SOCKS5 OR HTTP not both!).
+## FoxyProxy config
+
+Configure it according to the screenshots. (You will only need to configure SOCKS5 OR HTTP not both!).
 If possible use SOCKS5 proxy.  
 ![alt text](./screenshots/socks_foxyproxy.jpg "FoxyProxy SOCKS5 proxy config")  
 ![alt text](./screenshots/http_foxyproxy.jpg "FoxyProxy HTTP proxy config")  

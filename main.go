@@ -415,7 +415,7 @@ func UpdateCards() {
 						}
 						Gui.Settings.LastSelProxyIndex = index
 						Gui.Settings.Store()
-						Data.datas = make([]*ProxyEntry, 1, 1)
+						Data.datas = make([]*ProxyEntry, 1)
 						Data.datas[0] = proxies[index]
 						f()
 					}, Gui.MainWindow)
