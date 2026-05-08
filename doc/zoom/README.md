@@ -12,7 +12,7 @@ Configure a SOCKS5 Proxy as described here [FoxyProxy configuration](../../READM
 
 Now we need to configure Firefox to use WebRTC over our proxy:  
 In Firefox type in the address bar **about:config** and press ENTER.  
-Now serch for:
+Now search for:
 
 - **media.peerconnection.ice.proxy_only = true**  
 ![alt text](../../screenshots/firefox_rtc.jpg "Firefox RTC settings")  
@@ -30,6 +30,16 @@ Now serch for:
 4. When you receive the Zoom link - open it in the browser - NOT launching the Zoom app !!!  
 ![alt text](../../screenshots/zoom_browser1.jpg "Zoom - open in browser")  
 ![alt text](../../screenshots/zoom_browser2.jpg "Zoom - open in browser")  
+
+If you are not asked to open it in the browser and the Zoom app starts you need the following:  
+In Firefox type in the address bar **about:preferences** and press ENTER.  
+Now search for **applications**:  
+Click on **zoomtg** and change the entry to **Always ask**:  
+![alt text](../../screenshots/firefox_zoom.jpg "Zoom - open mode")  
+
+
+
+
 
 Author: Reiner Pröls  
 Licence: MIT  
