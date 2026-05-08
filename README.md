@@ -64,6 +64,7 @@ All this informations must be entered in the SshProxy config dialog. There you a
 Now you must configure your browser to use the proxy. For desktop Firefox / Chrome / Edge search for FoxyProxy Plugin.  
 
 [FoxyProxy for Firefox](https://addons.mozilla.org/en-US/firefox/addon/foxyproxy-standard/)  
+
 ![alt text](./screenshots/foxyproxy_install_1.jpg "FoxyProxy install 1")  
 ![alt text](./screenshots/foxyproxy_install_2.jpg "FoxyProxy install 2")  
 [FoxyProxy for Chrome](https://chromewebstore.google.com/detail/foxyproxy/gcknhkkoolaabfmlnjonogaaifnjlfnp?hl=en&pli=1)  
