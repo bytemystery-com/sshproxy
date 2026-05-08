@@ -14,18 +14,18 @@ Now we need to configure Firefox to use WebRTC over our proxy:
 In Firefox type in the address bar **about:config** and press ENTER.  
 Now serch for:
 
-- **media.peerconnection.ice.proxy_only** = true  
+- **media.peerconnection.ice.proxy_only = true**  
 ![alt text](../../screenshots/firefox_rtc.jpg "Firefox RTC settings")  
 
-- **network.proxy.socks_remote_dns** = true  
+- **network.proxy.socks_remote_dns = true**  
 ![alt text](../../screenshots/firefox_dns1.jpg "Firefox DNS settings")  
 
-- **network.proxy.socks5_remote_dns** = true  
+- **network.proxy.socks5_remote_dns = true**  
 ![alt text](../../screenshots/firefox_dns2.jpg "Firefox DNS settings")  
 
 1. Now restart Firefox  
-2. Start SshProxy
-3. Activate the Proxy in Firefox
+2. Start SshProxy  
+3. Activate the Proxy in Firefox  
 ![alt text](../../screenshots/foxyproxy_socks.jpg "Activate proxy")  
 4. When you receive the Zoom link - open it in the browser - NOT launching the Zoom app !!!  
 ![alt text](../../screenshots/zoom_browser1.jpg "Zoom - open in browser")  
