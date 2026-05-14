@@ -278,6 +278,17 @@ func main() {
 			}
 		}()
 	*/
+	if desk, ok := Gui.App.(desktop.App); ok {
+		m := fyne.NewMenu("",
+			fyne.NewMenuItem(lang.X("systemtray.show", "Show"), func() {
+				Gui.MainWindow.Show()
+			}))
+		desk.SetSystemTrayMenu(m)
+	}
+
+	Gui.MainWindow.SetCloseIntercept(func() {
+		Gui.MainWindow.Hide()
+	})
 
 	Gui.MainWindow.Show()
 	Gui.App.Run()

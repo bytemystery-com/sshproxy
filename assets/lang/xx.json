@@ -51,6 +51,7 @@
     "settings.sshkey": "SSH key",
     "settings.user": "User",
     "settings.user_placeholder": "SSH user",
+    "systemtray.show": "Show",
     "update.msg": "A new version %s is available !",
     "update.nonew": "You are alread running the latest version.",
     "update.notify.msg": "New version %s is available",
