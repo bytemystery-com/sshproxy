@@ -296,6 +296,7 @@ func LogOut() {
 			})
 		} else {
 			UpdateToolBar()
+			UpdateCards()
 		}
 	}, func() {
 		LogOut()
