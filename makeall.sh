@@ -87,6 +87,15 @@ do
 done
 shift $(($OPTIND - 1))
 
+function fix_makefile()
+{
+    local tmpdir=$(mktemp -d)
+    tar -xf "${1}" -C "${tmpdir}"
+    local mydir=$(find "${tmpdir}" -mindepth 1 -maxdepth 1 -type d | head -n1)
+    sed -i 's/^\(Icon := ".*\)"$/\1.png"/' "$mydir/Makefile"
+    tar -C "${tmpdir}" -cJf "${1}" "$(basename "$mydir")"
+}
+
 if [[ ${ONLYWIN} -eq 0 && ${ONLYAND} -eq 0 && ${ONLYLINUX} -eq 0 ]] ; then
     go fmt ./...    
     go vet ./... 
@@ -166,6 +175,7 @@ for tag in ${TAGS} ; do
         mkdir -p dist/linux
         sudo mv -f "${PROGRAM_NAME}" dist/linux/"${PROGRAM_NAME}"${suffix}
         mv "${PROGRAM_NAME}".tar.xz dist/linux/"${PROGRAM_NAME}"${suffix}.tar.xz
+        fix_makefile dist/linux/"${PROGRAM_NAME}"${suffix}.tar.xz
     fi
 
     if [[ ${ONLYAND} -eq 1 ]] ; then

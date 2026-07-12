@@ -142,9 +142,11 @@ func NewProxyCfgTab(index int, proxy *ProxyEntry) *ProxyCfgTab {
 		}, Gui.MainWindow)
 
 		dia.SetView(dialog.ListView)
-		ms := Gui.MainWindow.Canvas().Size()
-		dia.Resize(fyne.NewSize(ms.Width*.8, ms.Height*.8))
 		dia.Show()
+		if Gui.IsDesktop {
+			ms := Gui.MainWindow.Canvas().Size()
+			dia.Resize(fyne.NewSize(ms.Width*.8, ms.Height*.8))
+		}
 	})
 	cfgTab.keyFileDel = widget.NewButtonWithIcon("", theme.ContentRemoveIcon(), func() {
 		cfgTab.proxy.KeyFileContent = []byte{}
@@ -203,9 +205,11 @@ func NewProxyCfgTab(index int, proxy *ProxyEntry) *ProxyCfgTab {
 			cfgTab.hostKeyList.Refresh()
 		}, Gui.MainWindow)
 		diaHost.SetView(dialog.ListView)
-		ms := Gui.MainWindow.Canvas().Size()
-		diaHost.Resize(fyne.NewSize(ms.Width*.8, ms.Height*.8))
 		diaHost.Show()
+		if Gui.IsDesktop {
+			ms := Gui.MainWindow.Canvas().Size()
+			diaHost.Resize(fyne.NewSize(ms.Width*.8, ms.Height*.8))
+		}
 	})
 	cfgTab.toolItemDel = widget.NewToolbarAction(theme.ContentRemoveIcon(), func() {
 		if selectedHostFileIndex >= 0 {
