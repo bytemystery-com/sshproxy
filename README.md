@@ -15,7 +15,7 @@ SshProxy is written in [Go](https://go.dev/) and uses [Fyne](https://fyne.io/) a
 
 ## Differences to VPN
 
-1. You use your own server - you can access conten from your internal network
+1. You use your own server - you can access content from your internal network
 2. You use your private IP address - VPN IP address are often banned
 
 ## Screenshots
