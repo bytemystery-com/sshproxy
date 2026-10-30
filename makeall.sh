@@ -101,6 +101,8 @@ if [[ ${ONLYWIN} -eq 0 && ${ONLYAND} -eq 0 && ${ONLYLINUX} -eq 0 ]] ; then
     go vet ./... 
     go get -u ./... # ???   
     go mod tidy
+    go install github.com/chimanjain/gomajor/cmd/gomajor@latest
+    gomajor list -a
     if [[ ${CLEAN} ]] ; then
         go clean -cache -modcache
     fi
